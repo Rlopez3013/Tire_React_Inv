@@ -6,7 +6,7 @@ function About() {
     <div>
       <h1>About Page</h1>
       <p>P</p>
-      <span>TG</span>
+      <span>TG Friday open</span>
     </div>
   );
 

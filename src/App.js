@@ -11,28 +11,37 @@ import Tires from "./componets/tires/Tires";
 //import "./componets/table.css";
 import Makers from "./componets/makers/Makers";
 import Sizes from "./componets/sizes/Sizes";
-
+import { BrandProvider } from "./componets/context/BrandContext";
+import { MakerProvider } from "./componets/makerContext/MakerContext";
+import { SizeProvider } from "./componets/SizeContext/sizeContext";
+import { ModelProvider } from "./componets/ModelContext/modelContext";
+import { TiresProvider } from "./componets/TiresContext/tireContext";
 function App() {
   return (
-    <Router>
-      <div className="App-brand">
-        <Nav />
-        <Switch>
-          <Route path="/" exact component={Home} />
-          <Route path="/brands" component={Brand} />
-          <Route path="/models_tires" component={Tires} />
-          <Route path="/models" component={Models} />
-          <Route path="/makers" component={Makers} />
-          <Route path="/sizes" component={Sizes} />
-        </Switch>
-      </div>
-    </Router>
-  ); //react routes for other page
+    <div className="App-brand">
+      <BrandProvider>
+        <MakerProvider>
+          <SizeProvider>
+            <ModelProvider>
+              <TiresProvider>
+                <Router>
+                  <Nav />
+                  <Switch>
+                    <Route path="/" exact component={About} />
+                    <Route path="/brands" component={Brand} />
+                    <Route path="/models_tires" component={Tires} />
+                    <Route path="/models" component={Models} />
+                    <Route path="/makers" component={Makers} />
+                    <Route path="/sizes" component={Sizes} />
+                  </Switch>
+                </Router>
+              </TiresProvider>
+            </ModelProvider>
+          </SizeProvider>
+        </MakerProvider>
+      </BrandProvider>
+    </div>
+  );
 }
-//console.log(process.env.React_APP_BASE_URL);
-const Home = () => (
-  <div>
-    <h1>Home Page</h1>
-  </div>
-);
+
 export default App;

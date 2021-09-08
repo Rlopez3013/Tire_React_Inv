@@ -1,37 +1,45 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import * as utils from "./sizeFunctions";
+import SizeContext from "../SizeContext/sizeContext";
 
+const SizesTable = () => {
+  const {
+    listSize,
+    onDelete,
+    onEdit,
+    onSave,
+    inEditMode,
+    setInEditMode,
+    onCancel,
+  } = useContext(SizeContext);
 
-
-const SizesTable = (props) => {
-  
   const [size, setSize] = useState(null);
 
   useEffect(() => {
     console.log("calling api");
     //utils.getSize();
   }, []);
-  const [inEditMode, setInEditMode] = useState({
-    status: false,
-    rowKey: null,
-  });
-  const onEdit = ({ id, currentSize }) => {
-    setInEditMode({
-      status: true,
-      rowKey: id,
-    });
-    setSize(currentSize);
-  };
+  // const [inEditMode, setInEditMode] = useState({
+  //   status: false,
+  //   rowKey: null,
+  // });
+  // const onEdit = ({ id, currentSize }) => {
+  //   setInEditMode({
+  //     status: true,
+  //     rowKey: id,
+  //   });
+  //   setSize(currentSize);
+  // };
 
-  const onSave = ({ id, newSize }) => {
-    utils.updateSize({ id, newSize });
-  };
-  const onCancel = () => {
-    setInEditMode({
-      status: false,
-      rowKey: null,
-    });
-  };
+  // const onSave = ({ id, newSize }) => {
+  //   utils.updateSize({ id, newSize });
+  // };
+  // const onCancel = () => {
+  //   setInEditMode({
+  //     status: false,
+  //     rowKey: null,
+  //   });
+  // };
 
   return (
     <div className="brand-body">
@@ -45,14 +53,14 @@ const SizesTable = (props) => {
           </tr>
         </thead>
         <tbody>
-          {props.listSize.map((item) => (
+          {listSize.map((item) => (
             <tr key={item.id}>
               <td>{item.id}</td>
               <td>
                 {inEditMode.status && inEditMode.rowKey === item.id ? (
                   <select defaultValue={item.size_id}>
                     <option>Select size</option>
-                    {props.sizeList.map((item) => (
+                    {listSize.map((item) => (
                       <option key={item.id} value={item.id}>
                         {item.size}
                       </option>
@@ -99,7 +107,7 @@ const SizesTable = (props) => {
                 )}
                 <button
                   className={"btn-delete"}
-                  onClick={() => utils.onDelete({ id: item.id })}
+                  onClick={() => onDelete({ id: item.id })}
                 >
                   Delete
                 </button>

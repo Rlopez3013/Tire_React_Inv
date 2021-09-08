@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Axios from "axios";
 
-const NewBrndForm = () => {
+export const NewBrndForm = () => {
   const [newBrand, setNewBrand] = useState({ brand: "" });
 
   const submit = (e) => {
@@ -19,7 +19,7 @@ const NewBrndForm = () => {
         <input
           type="text"
           name="brand"
-          onChange={(e) => setNewBrand({ ...newBrand, size: e.target.value })}
+          onChange={(e) => setNewBrand({ ...newBrand, brand: e.target.value })}
         />
         <button className={"btn-submit"} type="submit">
           Submit

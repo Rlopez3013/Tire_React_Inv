@@ -4,7 +4,7 @@ const MAKERS_API_URL = `${API_HOST}/api/makers`;
 
 export const getAllMaker = Axios.get(MAKERS_API_URL);
 
-export const updateMaker = (id, newMaker) => {
+export const updateMaker = ({id, newMaker}) => {
   Axios.put("MAKERS_API_URL/updateMaker", {
     id: id,
     maker: newMaker,
@@ -16,6 +16,6 @@ export const updateMaker = (id, newMaker) => {
 
 
 
-export const onDelete = (maker) => {
-  Axios.delete(`http://localhost:5000/api/delete/${maker}`);
-};
+// export const onDelete = (id) => {
+//   Axios.delete(`{MAKERS_API_URL}/delete/${id}`);
+// };

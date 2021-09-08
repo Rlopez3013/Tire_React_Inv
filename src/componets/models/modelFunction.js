@@ -18,6 +18,6 @@ export const updateModel = (id, newModel) => {
   });
 };
 
-export const onDelete = (model) => {
-  Axios.delete(`http://localhost:5000/api/delete/${model}`);
-};
+// export const onDelete = (model) => {
+//   Axios.delete(`${MODELS_API_URL}/delete/${model}`);
+// };

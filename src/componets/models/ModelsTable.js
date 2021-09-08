@@ -1,55 +1,60 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import "./Models.css";
-import * as utils from "./modelFunction";
+import ModelContext from "../ModelContext/modelContext";
 
-const API_HOST = "http://localhost:5000";
-const MODELS_API_URL = `${API_HOST}/api/models`;
-//const MKR_HOST = "http://localhost:5000";
-//const MAKERS_API_URL = `${MKR_HOST}/api/makers`;
+const API_URL = "http://localhost:5000";
+const MODELS_API_URL = `${API_URL}/api/models`;
 
-const ModelsTable = (props) => {
+const MKR_URL = "http://localhost:5000";
+const MAKERS_API_URL = `${MKR_URL}/api/makers`;
+
+const ModelsTable = () => {
+  const {
+    listModels,
+    onCancel,
+    onDelete,
+    onEdit,
+    inEditMode,
+    onSave,
+    listMakers,
+    years,
+  } = useContext(ModelContext);
+  const [model, setModel] = useState(null);
   
-  const [model, setModel] = useState({});
-  
+  useEffect(() => {}, []);
 
-  useEffect(() => {
-    //utils.getAllModelList();
-  }, []);
+  useEffect(() => {}, []);
 
-  useEffect(() => {
-    //utils.getAllMakeList();
-  }, []);
+  // const [inEditMode, setInEditMode] = useState({
+  //   status: false,
+  //   rowKey: null,
+  // });
 
-  const [inEditMode, setInEditMode] = useState({
-    status: false,
-    rowKey: null,
-  });
+  // const onEdit = ({ id, currentModel, currentMaker, currentYear }) => {
+  //   setInEditMode({
+  //     status: true,
+  //     rowKey: id,
+  //   });
 
-  const onEdit = ({ id, currentModel, currentMake, currentYear }) => {
-    setInEditMode({
-      status: true,
-      rowKey: id,
-    });
+  //   setModel({
+  //     model: currentModel,
+  //     maker: currentMaker,
+  //     year: currentYear,
+  //   });
+  // };
 
-    setModel({
-      model: currentModel,
-      make: currentMake,
-      year: currentYear,
-    });
-  };
+  // const onSave = ({ id, newModel }) => {
+  //   utils.updateModel({ id, newModel });
+  // };
 
-  const onSave = ({ id, newModel }) => {
-    utils.updateModel({ id, newModel });
-  };
-
-  const onCancel = () => {
-    // reset the inEditMode state value
-    setInEditMode({
-      status: false,
-      rowKey: null,
-    });
-    // reset the unit price state value
-  };
+  // const onCancel = () => {
+  //   // reset the inEditMode state value
+  //   setInEditMode({
+  //     status: false,
+  //     rowKey: null,
+  //   });
+  //   // reset the unit price state value
+  // };
 
   return (
     <div className={"brand-body"}>
@@ -65,32 +70,29 @@ const ModelsTable = (props) => {
           </tr>
         </thead>
         <tbody>
-          {props.modelList.map((item) => (
+          {listModels.map((item) => (
             <tr key={item.id}>
               <td>{item.id}</td>
               <td>
                 {inEditMode.status && inEditMode.rowKey === item.id ? (
-                  <div>
-                    <select defaultValue={item.make_id}>
-                      <option>Select Maker</option>
-                      {props.makers.map((maker) => (
-                        <option key={maker.id} value={maker.id}>
-                          {maker.maker}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
+                  <select defaultValue={item.maker_id}>
+                    <option>Select Maker</option>
+                    {listMakers.map((maker) => (
+                      <option key={maker.id} value={maker.id}>
+                        {maker.maker}
+                      </option>
+                    ))}
+                  </select>
                 ) : (
                   item.maker
                 )}
               </td>
-
               <td>
                 {inEditMode.status && inEditMode.rowKey === item.id ? (
                   <div>
                     <select defaultValue={item.model_id}>
                       <option>Select Model</option>
-                      {props.modelList.map((model) => (
+                      {listModels.map((model) => (
                         <option key={model.id} value={model.id}>
                           {model.model}
                         </option>
@@ -106,7 +108,7 @@ const ModelsTable = (props) => {
                   <div>
                     <select defaultValue={item.year_id}>
                       <option>Select Year</option>
-                      {props.years.map((year) => (
+                      {years.map((year) => (
                         <option key={year.id} value={year.id}>
                           {year.year}
                         </option>
@@ -154,7 +156,7 @@ const ModelsTable = (props) => {
                 )}
                 <button
                   className={"btn-delete"}
-                  onClick={() => utils.onDelete({ id: item.id })}
+                  onClick={() => onDelete(item.id)}
                 >
                   Delete
                 </button>

@@ -77,7 +77,7 @@ function NewModelForm() {
           >
             <option>Select Year</option>
             {years.map((year) => (
-              <option key={year.id} value={year.id}>
+              <option key={year.id} value={year.year}>
                 {year.year}
               </option>
             ))}

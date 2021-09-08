@@ -22,6 +22,6 @@ export const updateSize = (id, size) => {
   });
 };
 
-export const onDelete = (size) => {
-  Axios.delete(`http://localhost:5000/api/delete/${size}`);
-};
+// export const onDelete = (id) => {
+//   Axios.delete(`${SIZES_API_URL}/api/delete/${id}`);
+// };

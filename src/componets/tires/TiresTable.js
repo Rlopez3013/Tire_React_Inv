@@ -1,45 +1,56 @@
-import React, { useState, useEffect } from "react";
-//import Axios from "axios";
+import React, { useContext } from "react";
 import "./Tires.css";
-import * as utils from "./tireFunction";
 
-const TiresTable = (props) => {
+import TireContext from "../TiresContext/tireContext";
 
-  const [tire, setTire] = useState({});
-  
+const TiresTable = () => {
+  //const [tire, setTire] = useState(null);
+  const {
+    listTires,
+    listSize,
+    listSeason,
+    tire,
+    setTire,
+    onDelete,
+    onEdit,
+    onSave,
+    onCancel,
+    inEditMode,
+    setInEditMode,
+  } = useContext(TireContext);
 
-  useEffect(() => {
-    
-  }, []);
+  // useEffect(() => {
+  //   console.log("call api");
+  // }, []);
 
-  const [inEditMode, setInEditMode] = useState({
-    status: false,
-    rowKey: null,
-  });
+  // const [inEditMode, setInEditMode] = useState({
+  //   status: false,
+  //   rowKey: null,
+  // });
 
-  const onEdit = ({ id, currentTire, currentSize, currentSeason }) => {
-    setInEditMode({
-      status: true,
-      rowKey: id,
-    });
+  // const onEdit = ({ id, currentTire, currentSize, currentSeason }) => {
+  //   setInEditMode({
+  //     status: true,
+  //     rowKey: id,
+  //   });
 
-    setTire({
-      tire: currentTire,
-      size: currentSize,
-      season: currentSeason,
-    });
-  };
+  //   setTire({
+  //     tire: currentTire,
+  //     size: currentSize,
+  //     season: currentSeason,
+  //   });
+  // };
 
-  const onSave = ({ id, newTire }) => {
-    utils.updateTire({ id, newTire });
-  };
+  // const onSave = ({ id, newTire }) => {
+  //   utils.updateTire({ id, newTire });
+  // };
 
-  const onCancel = () => {
-    setInEditMode({
-      status: false,
-      rowkey: null,
-    });
-  };
+  // const onCancel = () => {
+  //   setInEditMode({
+  //     status: false,
+  //     rowkey: null,
+  //   });
+  // };
 
   return (
     <div className="brand-body">
@@ -55,8 +66,8 @@ const TiresTable = (props) => {
           </tr>
         </thead>
         <tbody>
-          {props.listTires.map((item) => (
-            <tr key={item.id}>
+          {listTires.map((item) => (
+            <tr key={item.tire_id}>
               <td>{item.id}</td>
               <td>
                 {inEditMode.status && inEditMode.rowKey === item.id ? (
@@ -79,15 +90,13 @@ const TiresTable = (props) => {
               </td>
               <td>
                 {inEditMode.status && inEditMode.rowKey === item.id ? (
-                  <div>
-                    <select defaultValue={item.sizeId}>
-                      {props.sizeList.map((size) => (
-                        <option key={size.id} value={size.id}>
-                          {size.size}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
+                  <select defaultValue={item.size_id}>
+                    {listSize.map((size) => (
+                      <option key={item.size_id} value={item.id}>
+                        {size.size}
+                      </option>
+                    ))}
+                  </select>
                 ) : (
                   item.size
                 )}
@@ -95,10 +104,10 @@ const TiresTable = (props) => {
               <td>
                 {inEditMode.status && inEditMode.rowKey === item.id ? (
                   <div>
-                    <select defaultValue={item.seasonId}>
+                    <select defaultValue={item.season_id}>
                       <option value={item.season}>Select Season</option>
-                      {props.seasonList.map((season) => (
-                        <option key={season.id} value={season.id}>
+                      {listSeason.map((season) => (
+                        <option key={season.season_id} value={season.id}>
                           {season.season}
                         </option>
                       ))}
@@ -116,7 +125,7 @@ const TiresTable = (props) => {
                       className={"btn-success"}
                       onClick={() => {
                         console.log(tire);
-                        onSave({ id: item.id, newTire: tire.tire });
+                        onSave({ id: item.id, newTire: item.tire });
                       }}
                     >
                       Save
@@ -147,7 +156,7 @@ const TiresTable = (props) => {
                 )}
                 <button
                   className={"btn-delete"}
-                  onClick={() => utils.onDelete({ id: item.id })}
+                  onClick={() => onDelete({ id: item.id })}
                 >
                   Delete
                 </button>

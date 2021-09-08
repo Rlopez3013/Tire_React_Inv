@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Axios from "axios";
 
 const NewMkrForm = () => {
-  const [newMaker, setNewMaker] = useState({ size: "" });
+  const [newMaker, setNewMaker] = useState({ maker: "" });
 
   const submit = (e) => {
     e.preventDefault();

@@ -1,38 +1,58 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext } from "react";
 import "./Brand.css";
-import * as utils from "./brandFunctions";
 
+import BrandContext from "../context/BrandContext";
 
-const BrandsTable = (props) => {
-  const [brand, setBrand] = useState(null);
+const API_HOST = "http://localhost:5000";
+const BRANDS_API_URL = `${API_HOST}/api/brands`;
 
-  useEffect(() => {
-    console.log("call api");
-    //utils.getAllBrand();
-  }, []);
+const BrandsTable = () => {
+  const {
+    brandList,
+    brand,
+    setBrand,
+    onDelete,
+    inEditMode,
+    setInEditMode,
+    onEdit,
+    onSave,
+    onCancel,
+  } = useContext(BrandContext);
+  // const [brand, setBrand] = useState(null);
 
-  const [inEditMode, setInEditMode] = useState({
-    status: true,
-    rowKey: null,
-  });
+  // useEffect(() => {
+  //   console.log("call api");
+  //   //utils.getAllBrand();
+  // }, []);
 
-  const onEdit = ({ id, currentBrand }) => {
-    setInEditMode({
-      status: true,
-      rowKey: id,
-    });
-    setBrand(currentBrand);
-  };
+  // const onDelete = (id) => {
+  //   console.log(id);
+  //   Axios.delete(`${BRANDS_API_URL}/${id}`).then((res) => {});
+  // };
 
-  const onSave = ({ id, newBrand }) => {
-    utils.updateBrand({ id, newBrand });
-  };
-  const onCancel = () => {
-    setInEditMode({
-      status: false,
-      rowKey: null,
-    });
-  };
+  // const [inEditMode, setInEditMode] = useState({
+  //   status: true,
+  //   rowKey: null,
+  // });
+
+  // const onEdit = ({ id, currentBrand }) => {
+  //   setInEditMode({
+  //     status: true,
+  //     rowKey: id,
+  //   });
+  //   setBrand(currentBrand);
+  // };
+
+  // const onSave = ({ id, newBrand }) => {
+  //   utils.updateBrand({ id, newBrand });
+  // };
+
+  // const onCancel = () => {
+  //   setInEditMode({
+  //     status: false,
+  //     rowKey: null,
+  //   });
+  // };
 
   return (
     <div className="brand-body">
@@ -41,21 +61,21 @@ const BrandsTable = (props) => {
         <thead>
           <tr>
             <th>Id</th>
-            <th>Brand</th>
+            <th>Brands</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          {props.listBrands.map((item) => (
+          {brandList.map((item) => (
             <tr key={item.id}>
               <td>{item.id}</td>
               <td>
                 {inEditMode.status && inEditMode.rowKey === item.id ? (
                   <select defaultValue={item.brand_id}>
                     <option>Select Brand</option>
-                    {props.listBrands.map((brand) => (
+                    {brandList.map((brand) => (
                       <option key={brand.id} value={brand.id}>
-                        {brand.brand}
+                        {item.brand}
                       </option>
                     ))}
                   </select>
@@ -68,7 +88,9 @@ const BrandsTable = (props) => {
                   <React.Fragment>
                     <button
                       className={"btn-success"}
-                      onClick={() => onSave({ id: item.id, newBrand: brand })}
+                      onClick={() =>
+                        onSave({ id: item.id, newBrand: item.brand })
+                      }
                     >
                       Save
                     </button>
@@ -94,7 +116,7 @@ const BrandsTable = (props) => {
                 )}
                 <button
                   className={"btn-delete"}
-                  onClick={() => utils.onDelete({ id: item.id })}
+                  onClick={() => onDelete(item.id)}
                 >
                   Delete
                 </button>

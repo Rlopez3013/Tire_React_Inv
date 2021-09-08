@@ -1,17 +1,17 @@
-import { useState, useEffect } from "react";
-import React from "react";
+//import { useState, useEffect } from "react";
 import ModelsTable from "./ModelsTable";
 import NewModelForm from "../models/NewModelForm";
-import * as utils from "./modelFunction";
+//import * as utils from "./modelFunction";
 
 const Models = () => {
-  const [modelList, setModelList] = useState([]);
-
-  useEffect(() => {
-    let models = utils.getAllModelList.then((res) => {
-      setModelList(res.data);
-    });
-  });
+  //const [listModel, setListModel] = useState([]);
+  //const [makerList, setMakerList] = useState([]);
+  //const [years, setYears] = useState([]);
+  // useEffect(() => {
+  //   let models = utils.getAllModelList.then((res) => {
+  //     setListModel(res.data);
+  //   });
+  // }, []);
 
   return (
     <div className="App-brand">
@@ -19,7 +19,7 @@ const Models = () => {
         <br></br>
         <br></br>
       </div>
-      <ModelsTable modelList={modelList} />
+      <ModelsTable />
       <NewModelForm />
       <br></br>
       <br></br>

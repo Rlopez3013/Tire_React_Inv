@@ -1,40 +1,27 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import "./Makers.css";
-import * as utils from "./makerFunctions";
+
+import MakerContext from "../makerContext/MakerContext";
 
 const API_URL = "http://localhost:5000";
 const MAKERS_API_URL = `${API_URL}/api/makers`;
 
-const MakersTable = (props) => {
+const MakersTable = () => {
+  const {
+    listMakers,
+    onDelete,
+    onEdit,
+    onSave,
+    onCancel,
+    inEditMode,
+    setInEditMode,
+  } = useContext(MakerContext);
   const [maker, setMaker] = useState(null);
 
   useEffect(() => {
     console.log("calling api");
     //utils.getAllMaker();
   }, []);
-
-  const [inEditMode, setInEditMode] = useState({
-    status: false,
-    rowKey: null,
-  });
-
-  const onEdit = ({ id, currentMaker }) => {
-    setInEditMode({
-      status: true,
-      rowKey: id,
-    });
-    setMaker(currentMaker);
-  };
-
-  const onSave = ({ id, newMaker }) => {
-    utils.updateMaker({ id, newMaker });
-  };
-  const onCancel = () => {
-    setInEditMode({
-      status: false,
-      rowKey: null,
-    });
-  };
 
   return (
     <div className="table">
@@ -48,14 +35,14 @@ const MakersTable = (props) => {
           </tr>
         </thead>
         <tbody>
-          {props.listMakers.map((item) => (
+          {listMakers.map((item) => (
             <tr key={item.id}>
               <td>{item.id}</td>
               <td>
                 {inEditMode.status && inEditMode.rowKey === item.id ? (
                   <select defaultValue={item.maker_id}>
                     <option>Select Maker</option>
-                    {props.listmakers.map((maker) => (
+                    {listMakers.map((maker) => (
                       <option key={maker.id} value={maker.id}>
                         {maker.maker}
                       </option>
@@ -70,7 +57,9 @@ const MakersTable = (props) => {
                   <React.Fragment>
                     <button
                       className={"btn-success"}
-                      onClick={() => onSave({ id: item.id, newMaker: maker })}
+                      onClick={() =>
+                        onSave({ id: item.id, newMaker: item.maker })
+                      }
                     >
                       Save
                     </button>
@@ -97,7 +86,7 @@ const MakersTable = (props) => {
                 )}
                 <button
                   className={"btn-delete"}
-                  onClick={() => utils.onDelete({ id: item.id })}
+                  onClick={() => onDelete({ id: item.id })}
                 >
                   Delete
                 </button>
